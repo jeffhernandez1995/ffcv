@@ -48,6 +48,17 @@ def imdecode(source: np.ndarray, dst: np.ndarray,
                            enable_crop, do_flip)
 
 
+ctypes_imdecode_webp = lib.imdecode_webp
+ctypes_imdecode_webp.argtypes = [c_void_p, c_uint64, c_uint32, c_uint32, c_void_p]
+ctypes_imdecode_webp.restype = c_int
+
+def imdecode_webp(source: np.ndarray, dst: np.ndarray, source_height: int, source_width: int):
+    result = ctypes_imdecode_webp(source.ctypes.data, source.size, source_height, source_width, dst.ctypes.data)
+    if result != 0:
+        raise Exception("WebP decoding failed")
+    return dst
+
+
 ctypes_memcopy = lib.my_memcpy
 ctypes_memcopy.argtypes = [c_void_p, c_void_p, c_uint64]
 

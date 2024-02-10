@@ -7,7 +7,6 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <turbojpeg.h>
-#include <webp/decode.h>
 #include <pthread.h>
 #ifdef _WIN32
     typedef unsigned __int32 __uint32_t;
@@ -110,33 +109,6 @@ extern "C" {
              tjFree(dstBuf);
         }
         return result;
-    }
-
-    // WebP decoding support
-
-    EXPORT int imdecode_webp(unsigned char *input_buffer, __uint64_t input_size,
-                            __uint32_t source_height, __uint32_t source_width,
-                            unsigned char *output_buffer)
-    {
-        WebPDecoderConfig config;
-        if (!WebPInitDecoderConfig(&config)) {
-            return -1; // Initialization error
-        }
-
-        config.output.colorspace = MODE_RGB; // or MODE_RGBA for RGBA
-        config.options.use_scaling = true;
-        config.options.scaled_width = source_width;
-        config.options.scaled_height = source_height;
-
-        if (WebPDecode(input_buffer, input_size, &config) != VP8_STATUS_OK) {
-            WebPFreeDecBuffer(&config.output);
-            return -2; // Decoding error
-        }
-
-        memcpy(output_buffer, config.output.u.RGBA.rgba, source_width * source_height * 3); // Assuming RGB
-        WebPFreeDecBuffer(&config.output);
-
-        return 0; // Success
     }
 
     static PyMethodDef libffcvMethods[] = {

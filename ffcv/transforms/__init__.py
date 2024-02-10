@@ -1,8 +1,9 @@
 from .cutout import Cutout
-from .flip import RandomHorizontalFlip
+from .flip import RandomHorizontalFlip, VideoRandomHorizontalFlip
 from .ops import ToTensor, ToDevice, ToTorchImage, Convert, View
 from .common import Squeeze
-from .resized_crop import RandomResizedCrop, LabelRandomResizedCrop, PadRGBImageDecoder, CornerCrop, CenterCrop
+# from .resized_crop import RandomResizedCrop, LabelRandomResizedCrop, PadRGBImageDecoder, CornerCrop, CenterCrop
+from .random_resized_crop import RandomResizedCrop
 from .poisoning import Poison
 from .replace_label import ReplaceLabel
 from .normalize import NormalizeImage
@@ -14,7 +15,7 @@ from .grayscale import RandomGrayscale, LabelGrayscale
 from .solarization import RandomSolarization, LabelSolarization
 from .translate import RandomTranslate, LabelTranslate
 from .gaussian_blur import GaussianBlur, LabelGaussianBlur
-from .erasing import RandomErasing
+# from .erasing import RandomErasing
 from .rotate import Rotate
 
 __all__ = ['ToTensor', 'ToDevice',
@@ -30,4 +31,4 @@ __all__ = ['ToTensor', 'ToDevice',
            'RandomSolarization', 'LabelSolarization',
            'RandomTranslate', 'LabelTranslate',
            'GaussianBlur', 'LabelGaussianBlur',
-           'RandomErasing', 'Rotate']
+           'RandomErasing', 'Rotate', 'VideoRandomHorizontalFlip']

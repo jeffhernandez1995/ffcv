@@ -61,7 +61,7 @@ class ToDevice(Operation):
 
 
 class ToTorchImage(Operation):
-    """Change tensor to PyTorch format for images (B x C x H x W).
+    """Change tensor to PyTorch format for image (B x C x H x W).
 
     Parameters
     ----------
@@ -107,6 +107,49 @@ class ToTorchImage(Operation):
         if not self.channels_last:
             alloc = AllocationQuery((C, H, W), dtype=new_type)
         return replace(previous_state, shape=(C, H, W), dtype=new_type), alloc
+
+
+class ToTorchVideo(Operation):
+    """Change tensor to PyTorch format for videos (B x T x C x H x W).
+
+    Parameters
+    ----------
+    channels_last : bool
+        Use torch.channels_last.
+    convert_back_int16 : bool
+        Convert to float16.
+    """
+    def __init__(self, convert_back_int16=True):
+        super().__init__()
+        self.convert_int16 = convert_back_int16
+        self.enable_int16conv = False
+
+    def generate_code(self) -> Callable:
+        do_conv = self.enable_int16conv
+        def to_torch_video(inp: ch.Tensor, dst):
+            # Returns a permuted view of the same tensor
+            if do_conv:
+                inp = inp.view(dtype=ch.float16)
+                pass
+            inp = inp.permute([0, 1, 4, 2, 3])
+
+            # Otherwise, need to fill the allocated memory with the contiguous tensor
+            dst[:inp.shape[0]] = inp.contiguous()
+            return dst[:inp.shape[0]]
+
+        return to_torch_video
+
+    def declare_state_and_memory(self, previous_state: State) -> Tuple[State, Optional[AllocationQuery]]:
+        T, H, W, C = previous_state.shape
+        new_type = previous_state.dtype
+
+        if new_type is ch.int16 and self.convert_int16:
+            new_type = ch.float16
+            self.enable_int16conv = True
+
+        alloc = AllocationQuery((T, C, H, W), dtype=new_type)
+        return replace(previous_state, shape=(T, C, H, W), dtype=new_type), alloc
+
 
 
 class Convert(Operation):

@@ -1,12 +1,15 @@
 from .cutout import Cutout
-from .flip import RandomHorizontalFlip, VideoRandomHorizontalFlip
-from .ops import ToTensor, ToDevice, ToTorchImage, Convert, View
+from .flip import RandomHorizontalFlip
+from .video_flip import VideoRandomHorizontalFlip
+from .ops import ToTensor, ToDevice, ToTorchImage, \
+    Convert, View, ToTorchVideo
 from .common import Squeeze
 # from .resized_crop import RandomResizedCrop, LabelRandomResizedCrop, PadRGBImageDecoder, CornerCrop, CenterCrop
 from .random_resized_crop import RandomResizedCrop
 from .poisoning import Poison
 from .replace_label import ReplaceLabel
 from .normalize import NormalizeImage
+from .video_normalize import NormalizeVideo
 from .translate import RandomTranslate
 from .mixup import ImageMixup, LabelMixup, MixupToOneHot
 from .module import ModuleWrapper
@@ -19,7 +22,7 @@ from .gaussian_blur import GaussianBlur, LabelGaussianBlur
 from .rotate import Rotate
 
 __all__ = ['ToTensor', 'ToDevice',
-           'ToTorchImage', 'NormalizeImage',
+           'ToTorchImage', 'NormalizeImage', 'NormalizeVideo',
            'Convert',  'Squeeze', 'View',
            'RandomResizedCrop', 'LabelRandomResizedCrop', 'PadRGBImageDecoder',
            'CornerCrop', 'CenterCrop', 'RandomHorizontalFlip', 'RandomTranslate',

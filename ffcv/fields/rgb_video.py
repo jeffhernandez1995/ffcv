@@ -201,7 +201,7 @@ class ResizedCropRGBVideoDecoder(SimpleRGBVideoDecoder, metaclass=ABCMeta):
 
         return (
             replace(previous_state, jit_mode=True,
-                    shape=temp_frame_shape, dtype=my_dtype),
+                    shape=final_shape, dtype=my_dtype),
             (
                 AllocationQuery(final_shape, my_dtype),
                 AllocationQuery(splits_shape, my_dtype),

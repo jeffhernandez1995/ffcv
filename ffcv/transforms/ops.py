@@ -148,7 +148,8 @@ class ToTorchVideo(Operation):
             new_type = ch.float16
             self.enable_int16conv = True
 
-        alloc = AllocationQuery((T, C, H, W), dtype=new_type)
+        # alloc = AllocationQuery((T, C, H, W), dtype=new_type)
+        alloc = None
         return replace(previous_state, shape=(T, C, H, W), dtype=new_type), alloc
 
 

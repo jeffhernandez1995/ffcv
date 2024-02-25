@@ -135,7 +135,6 @@ class ToTorchVideo(Operation):
 
             # Otherwise, need to fill the allocated memory with the contiguous tensor
             dst[:inp.shape[0]] = inp.contiguous()
-            print("ToTorchVideo", dst.device)
             return dst[:inp.shape[0]]
 
         return to_torch_video

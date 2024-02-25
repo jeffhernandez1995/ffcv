@@ -61,7 +61,7 @@ class NormalizeVideo(Operation):
             with ppe.cuda.stream(current_stream):
                 kernel(videos, table, result_c)
 
-            final_result = result.reshape(B, T, H, W, C).permute(0, 1, 3, 4, 2)
+            final_result = result.reshape(B, T, H, W, C).permute(0, 1, 4, 2, 3)
             # assert final_result.is_contiguous(memory_format=ch.channels_last), 'Videos need to be in channel last'
 
             return final_result.view(final_type)

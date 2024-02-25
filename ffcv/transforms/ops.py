@@ -126,7 +126,7 @@ class ToTorchVideo(Operation):
 
     def generate_code(self) -> Callable:
         do_conv = self.enable_int16conv
-        def to_torch_video(inp: ch.Tensor, dst):
+        def to_torch_video(inp, dst):
             # Returns a permuted view of the same tensor
             if do_conv:
                 inp = inp.view(dtype=ch.float16)

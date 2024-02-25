@@ -143,13 +143,14 @@ class ToTorchVideo(Operation):
     def declare_state_and_memory(self, previous_state: State) -> Tuple[State, Optional[AllocationQuery]]:
         T, H, W, C = previous_state.shape
         new_type = previous_state.dtype
+        device = previous_state.device
 
         if new_type is ch.int16 and self.convert_int16:
             new_type = ch.float16
             self.enable_int16conv = True
 
-        # alloc = AllocationQuery((T, C, H, W), dtype=new_type)
-        alloc = None
+        alloc = AllocationQuery((T, C, H, W), dtype=new_type, device=device)
+        # alloc = None
         return replace(previous_state, shape=(T, C, H, W), dtype=new_type), alloc
 
 

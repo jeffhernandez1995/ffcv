@@ -52,6 +52,7 @@ class ToDevice(Operation):
                     dst = dst.permute(0, 3, 1, 2)
             dst = dst[:inp.shape[0]]
             dst.copy_(inp, non_blocking=self.non_blocking)
+            print(dst.device)
             return dst
 
         return to_device

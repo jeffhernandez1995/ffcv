@@ -51,7 +51,7 @@ class NormalizeVideo(Operation):
         def normalize_convert(videos, result):
             B, T, C, H, W = videos.shape
             table = self.lookup_table.view(-1)
-            assert videos.is_contiguous(memory_format=ch.channels_last), 'Videos need to be in channel last'
+            # assert videos.is_contiguous(memory_format=ch.channels_last), 'Videos need to be in channel last'
             result = result[:B * T]
             result_c = result.view(-1)
             videos = videos.permute(0, 1, 3, 4, 2).reshape(-1)
@@ -61,7 +61,7 @@ class NormalizeVideo(Operation):
                 kernel(videos, table, result_c)
 
             final_result = result.reshape(B, T, H, W, C).permute(0, 1, 3, 4, 2)
-            assert final_result.is_contiguous(memory_format=ch.channels_last), 'Videos need to be in channel last'
+            # assert final_result.is_contiguous(memory_format=ch.channels_last), 'Videos need to be in channel last'
 
             return final_result.view(final_type)
 

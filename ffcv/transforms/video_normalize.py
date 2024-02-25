@@ -55,6 +55,7 @@ class NormalizeVideo(Operation):
             result = result[:B * T]
             result_c = result.view(-1)
             videos = videos.permute(0, 1, 3, 4, 2).reshape(-1)
+            print(videos.device)
 
             current_stream = ch.cuda.current_stream()
             with ppe.cuda.stream(current_stream):
